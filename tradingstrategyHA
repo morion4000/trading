@@ -1,0 +1,35 @@
+//@version=2
+strategy(title="Excessive Heikin Ashi", shorttitle="Excessive Heikin Ashi by Excessive Trading, Goldman Armi", overlay=true)
+len = input(17, minval=1, title="Length")
+src = input(open, title="Source")
+out = ema(src, len)
+//plot(out, title="EMA", color=blue)
+//last8h = highest(close, 8)
+//lastl8 = lowest(close, 8)
+
+//plot(last8h, color=red, linewidth=2)
+//plot(lastl8, color=green, linewidth=2)
+
+
+bearish = cross(close,out) == 1 and close[1] > close 
+bullish = cross(close,out) == 1 and close[1] < close 
+
+plotshape(bearish, color=white, style=shape.arrowdown, text="JOS", location=location.abovebar)
+plotshape(bullish, color=white, style=shape.arrowup, text="SUS", location=location.belowbar)
+
+
+buy = if cross(close,out) == 1 and close[1] < close
+    strategy.entry("BUY", strategy.long) 
+        //strategy.close_all(when=bearish)
+        // strategy.exit("exit", "Long", profit =, loss = 35)
+   
+   
+sell = if cross(close,out) == 1 and close[1] > close
+    strategy.entry("SELL", strategy.short)
+        //sell = if bearish
+        //strategy.close_all(when=bullish)
+        // strategy.exit("exit", "Long", profit = bullish, loss = 100)
+    
+profit = strategy.netprofit
+
+//plotshape(true, style=shape.triangleup, location=location.abovebar)
